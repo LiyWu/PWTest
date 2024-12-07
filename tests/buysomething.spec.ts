@@ -104,10 +104,11 @@ test1.describe("Test Suite2",()=>{
 
     });
 
-    test1("child windows",async({browser})=>{
+    test1.only("child windows",async({browser})=>{
         const context = await browser.newContext();
         const page = await context.newPage();
         const userName = page.locator('#username');
+        let domain;
         await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
         const documentLink = page.locator("[href*='documents-request']")
        
@@ -115,9 +116,22 @@ test1.describe("Test Suite2",()=>{
         context.waitForEvent('page'),//listen for any new page
         documentLink.click(),]);
 
+        page.waitForLoadState("networkidle");
+
         const text =await newPage.locator(".red").textContent();
         console.log(text)
         
+        if(text!=null)
+        {
+          const arrayText = text.split("@");
+          domain = arrayText[1].split(" ")[0]
+          console.log("domain:" + domain);
+        }
+
+        await page.locator("#username").fill(domain);
+        await page.pause();
+        console.log(await page.locator("#username").textContent())
+
 
     })
     

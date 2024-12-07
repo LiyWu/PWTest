@@ -79,6 +79,12 @@ test.describe('assignment register and login',()=>{
         await page.locator('#userMobile').fill(globalmethods.randomNumber(10));
         await page.locator('.custom-select').selectOption("1: Doctor");
         await page.locator("[type='radio'][value='Male']").click();
+
+        await expect(page.locator("[type='radio'][value='Male']")).toBeChecked();
+        await expect(page.locator("[type='radio'][value='Male']").isChecked).toBeTruthy();
+
+        await expect(page.locator("[type='radio']").first()).toHaveAttribute("value","Male");
+
         await page.locator("#userPassword").fill(password);
         await page.locator("#confirmPassword").fill(password);
         await page.locator("[type='checkbox']").check();
@@ -100,17 +106,18 @@ test.describe('assignment register and login',()=>{
 
     test('login in',async({page})=>{
         await page.goto("https://rahulshettyacademy.com/client");
-        //await page.locator('#userEmail').fill("sdfghwau@test.com");
-        //await page.locator('#userPassword').fill("Qwe123!@");
-        await page.locator('#userEmail').fill(email);
-        await page.locator('#userPassword').fill(password);
+        await page.locator('#userEmail').fill("sdfghwau@test.com");
+        await page.locator('#userPassword').fill("Qwe123!@");
+        //await page.locator('#userEmail').fill(email);
+        //await page.locator('#userPassword').fill(password);
+        await page.pause();
         await page.locator('[value="Login"]').click();
 
         await page.waitForLoadState('networkidle');
         expect(await page.locator(".card-body b").nth(0)).toHaveText(/Zara/i);
 
     })
-    test.only('jstest',()=>{
+    test('jstest',()=>{
         console.log("spec:" + globalmethods.spec(3));
     })
 })
