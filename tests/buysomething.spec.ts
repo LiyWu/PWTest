@@ -104,7 +104,7 @@ test1.describe("Test Suite2",()=>{
 
     });
 
-    test1.only("child windows",async({browser})=>{
+    test1("child windows",async({browser})=>{
         const context = await browser.newContext();
         const page = await context.newPage();
         const userName = page.locator('#username');

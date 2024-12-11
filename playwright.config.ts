@@ -37,7 +37,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     browserName: 'chromium',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure', // Automatically capture a screenshot on failure
     headless:false
    // video: 'retain-on-failure',

@@ -62,7 +62,7 @@ test("login pass test",async({page})=>{
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('assignment register and login',()=>{
+test.describe('register and login',()=>{
 
     const firstname = "autotest";
     const lastname = globalmethods.randomCharacter(5);
@@ -110,15 +110,126 @@ test.describe('assignment register and login',()=>{
         await page.locator('#userPassword').fill("Qwe123!@");
         //await page.locator('#userEmail').fill(email);
         //await page.locator('#userPassword').fill(password);
-        await page.pause();
+        //await page.pause();
         await page.locator('[value="Login"]').click();
 
         await page.waitForLoadState('networkidle');
         expect(await page.locator(".card-body b").nth(0)).toHaveText(/Zara/i);
 
     })
+
+    
+})
+
+test.describe("login, add to cart and checkout",()=>{
+    const userEmail = "sdfghwau@test.com";
+    test.beforeEach('login',async({page})=>{
+        await page.goto("https://rahulshettyacademy.com/client");
+        await page.locator('#userEmail').fill("sdfghwau@test.com");
+        await page.locator('#userPassword').fill("Qwe123!@");
+        await page.locator('[value="Login"]').click();
+
+        await page.waitForLoadState('networkidle');
+        expect(await page.locator(".card-body b").nth(0)).toHaveText(/Zara/i);
+
+    })
+    test.only('Add to my cart and checkout',async({page})=>{
+        
+        //add product to my cart
+       // await page.locator('.card-body',{hasText:/ZARA/i}).locator('button.btn',{hasText:"Add To Cart"}).click();
+       const product = page.locator(".card-body");
+       const productName = "ZARA COAT 3";
+       const count =await product.count();
+
+       const alltext = await page.locator(".card-body b").allTextContents();
+       for(let i = 0;i<count;i++)
+       {
+            if(await product.nth(i).locator('b').textContent()==productName)
+            {
+                await product.nth(i).locator("text=Add to Cart").click();
+                break;
+            }
+                
+       }
+
+       //go to cart to check
+       await page.locator('.btn-custom').locator("text=Cart").click();
+       await page.locator('div li').first().waitFor();
+
+       await expect(page.locator('.cartSection h3')).toHaveText(productName)
+       expect(await page.locator("h3:has-text('ZARA COAT')").isVisible()).toBeTruthy();
+       await page.locator("h3",{hasText:"ZARA COAT"}).isVisible();
+
+
+       //click checkout
+        await page.locator('div.subtotal button.btn-primary').click();
+
+        //input credit card info
+        await page.locator("[class*='small'] input[class*=txt]").first().fill("123");
+        await page.locator("[class='field'] input[class*=txt]").last().fill("HW");
+
+        //check email
+        await expect(page.locator("[class*='details__user'] label")).toHaveText(userEmail);
+
+        //select country
+        await page.locator("[placeholder*='Country']").pressSequentially("india",{delay:100});
+
+        const dropdown = page.locator(".ta-results");
+        await dropdown.waitFor();
+    
+        for(let i =0;i<await dropdown.locator("button").count();i++)
+        {
+            const text = await dropdown.locator("button").nth(i).textContent();
+            if(text?.trim()==='India')
+            {
+                await dropdown.locator("button").nth(i).click();
+                break;
+            }
+        }
+
+        //checkout
+        await page.locator("a[class*='inserted']").click();
+
+        //wait for next page
+        page.locator("h1[class*='hero-primary']").waitFor();
+
+        await expect(page.locator("h1[class*='hero-primary']")).toContainText("Thankyou for the order");
+
+        //get order id from confirm page
+        const orderid =  (await page.locator("label.ng-star-inserted").textContent()) ?? "";
+        const match = orderid.match(/\|\s*(\w+)\s*\|/); // Extract the alphanumeric string between "| ... |"
+        const extractedOrder = match ? match[1] : "";
+        console.log(extractedOrder); 
+
+        //go to orders page to check order id
+        await page.locator("[routerlink*='orders']").first().click();
+        await expect(page.locator("h1[class='ng-star-inserted']")).toHaveText("Your Orders");
+
+        //get all orders from order detail page and choose current order
+        const tr = page.locator("tr[class='ng-star-inserted']");
+        const trcount = await tr.count();
+        for(let i = 0; i<trcount;i++)
+        {
+            const trorder = (await tr.nth(i).locator("th").textContent())?? "";
+            if(trorder.includes(extractedOrder))
+            {
+                await tr.nth(i).locator("td button[class*='btn-primary']").click();
+               
+                break;
+
+            }
+        }
+        await page.locator(".col-md-6 .col-text").waitFor();
+        const orderDetailid= (await page.locator(".col-md-6 .col-text").textContent())??"";
+        console.log(orderDetailid);
+         await expect(page.locator(".col-md-6 .col-text")).toContainText(extractedOrder);
+         await expect(orderid?.includes(orderDetailid)).toBeTruthy();
+
+
+    })
     test('jstest',()=>{
         console.log("spec:" + globalmethods.spec(3));
     })
+
 })
 
