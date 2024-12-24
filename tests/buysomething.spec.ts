@@ -1,8 +1,7 @@
 import{expect,request} from 'playwright/test';
-import{test1} from './hooks';
-import loginPage from '../pages/loginPage';
-import homePage from '../pages/homePage';
+import{test1} from '../utils/Hooks';
 import {chromium} from 'playwright';
+import HomePage from '../pages/homePage';
 
 let loginPageA;
 let dashboardPage;
@@ -15,8 +14,8 @@ test1.describe('Test Suite 1', () => {
   });
 */
   test1.beforeEach(async ({ page }) => {
-    loginPageA = new loginPage(page);
-    dashboardPage = new homePage(page);
+    /*loginPageA = new loginPage(page);*/
+    dashboardPage = new HomePage(page)
     const browser = await chromium.launch({
         headless:false,
         args:[
@@ -131,11 +130,5 @@ test1.describe("Test Suite2",()=>{
         await page.locator("#username").fill(domain);
         await page.pause();
         console.log(await page.locator("#username").textContent())
-
-
-    })
-    
-       
-   
-    
+    })    
 });

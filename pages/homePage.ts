@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 
-class homePage {
+class HomePage {
     private page: Page;
   private welcomeMessage: string;
 
@@ -14,4 +14,4 @@ class homePage {
     }
   }
   
-  export default homePage;
+  export default HomePage;

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test tests/buysomething.spec.ts"
+    "APITests": "npx playwright test --grep @API",
+    "WebTests":"npx playwright test --grep @Web --reporter=line,allure-playwright"
   },
   "author": "",
   "license": "ISC",
