@@ -1,1 +1,1 @@
-An automation framework developed with Playwright using JavaScript/TypeScript, designed for end-to-end testing of modern web applications. It offers features such as parallel execution, customizable reporting, and a modular test structure, ensuring scalability and maintainability.
+An automation framework developed with Playwright using JavaScript/TypeScript, designed for end-to-end testing of modern web/api applications. It offers features such as parallel execution, customizable reporting, and a modular test structure, ensuring scalability and maintainability.
