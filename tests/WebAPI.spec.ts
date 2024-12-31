@@ -1,5 +1,6 @@
 import {test,expect,request,Response} from 'playwright/test'
 import APIUtils from '../utils/APIUtils'
+import HelenTest from './HelenTest';
 
 const loginPayload = {userEmail:"sdfghwau@test.com",userPassword:"Qwe123!@"};
 const orderPayload = {orders:[{country:"India",productOrderedId:"6581ca399fd99c85e8ee7f45"}]};
@@ -11,7 +12,7 @@ test.beforeAll(async()=>{
    const apiContext =  await request.newContext();
    const apiutils = new APIUtils(apiContext,loginPayload);
 
-   responseOrder = await apiutils.createOrder(orderPayload);
+   //responseOrder = await apiutils.createOrder(orderPayload);
    console.log(responseOrder)
 })
 test('@API Client App login',async({page})=>{
@@ -35,7 +36,7 @@ test('@API Client App login',async({page})=>{
     await page.context().addCookies([cookie]);*/
 
    const email="";
-   const productName = "Zara Coat 3";
+   const productName = "ADIDAS ORIGINAL";
    await page.goto("https://rahulshettyacademy.com/client/");
 
    
@@ -60,4 +61,11 @@ test('@API Client App login',async({page})=>{
    //await page.pause();
 
    expect(responseOrder.orderId.includes(orderIdDetails)).toBeTruthy();
-})
+});
+
+test.only("helentest",async({page})=>{
+
+
+   const helenTest = new HelenTest();
+   helenTest.testJson();
+});

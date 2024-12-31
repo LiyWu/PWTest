@@ -109,7 +109,7 @@ test.describe('register and login',()=>{
         loginPage.goto();
         loginPage.login("sdfghwau@test.com","Qwe123!@");
         await page.waitForLoadState('networkidle');
-        expect(await page.locator(".card-body b").nth(0)).toHaveText(/Zara/i);
+        expect(await page.locator(".card-body b").nth(0)).toHaveText(/Iphone/i);
     })
 
     

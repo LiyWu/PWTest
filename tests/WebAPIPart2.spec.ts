@@ -25,7 +25,7 @@ test.beforeAll(async({browser})=>{
 
 test('Client App Login',async({})=>{
     const email="";
-   const productName = "Zara Coat 3";
+   const productName = "ADIDAS ORIGINAL";
    const page = await webContext.newPage();
    await page.goto("https://rahulshettyacademy.com/client")
    const products = page.locator(".card-body");

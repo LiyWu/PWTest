@@ -18,6 +18,6 @@ export const testDataGroups = [
     {
         username: "sdfghwau@test.com",
         password: "Qwe123!@",
-        productName:"ZARA COAT 3"
+        productName:"IPHONE 13 PRO"
     }
 ];

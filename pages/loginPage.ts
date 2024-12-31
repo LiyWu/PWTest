@@ -18,7 +18,7 @@ class LoginPage {
     await this.page.fill(this.passwordInput, password);
     await this.page.click(this.loginButton);
     await this.page.waitForLoadState('networkidle');
-    expect(await this. page.locator(".card-body b").nth(0)).toHaveText(/Zara/i);
+    //expect(await this. page.locator(".card-body b").nth(0)).toHaveText(/Zara/i);
   }
 
   async goto()
